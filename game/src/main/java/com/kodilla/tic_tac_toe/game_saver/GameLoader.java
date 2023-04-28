@@ -6,6 +6,8 @@ public class GameLoader {
 
         loadBoard();
         loadPlayersDetails();
+
+        //TODO after loading game app must delete file
     }
 
     public void loadBoard() {
