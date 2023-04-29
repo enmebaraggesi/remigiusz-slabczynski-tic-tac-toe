@@ -2,6 +2,9 @@ package com.kodilla.tic_tac_toe.communication;
 
 import java.util.*;
 
+import com.kodilla.tic_tac_toe.engine.GameEngine;
+import com.kodilla.tic_tac_toe.gui.GameBoard;
+
 public class PlayerHandler {
 
     private String player1;
@@ -9,7 +12,6 @@ public class PlayerHandler {
     private Map<String, String> figures = Map.of("P1", "", "P2", "");
     private Scanner scanner = new Scanner(System.in);
 
-    //todo whole player handler
     public void explainRules() {
 
         System.out.println("""
@@ -31,60 +33,151 @@ public class PlayerHandler {
         //TODO before asking app will search for existing save file
 
         String answer = "";
-        while (!(answer.equals("y") || answer.equals("n"))) {
+        List<String> yesNo = List.of("y", "n");
+        do {
             System.out.println("""
                         
                 Do you want to continue previously saved game? y/n
-                        
                 """);
-            answer = scanner.nextLine();
-            if ("y".equals(scanner.nextLine())) {
+            answer = scanner.nextLine().toLowerCase();
+            if (yesNo.get(0).equals(answer)) {
                 //TODO load game
-            } else {
+            } else if (yesNo.get(1).equals(answer)){
                 return;
             }
-        }
+        } while (!yesNo.contains(answer));
     }
 
     public void askHowManyPlayers() {
 
-        //ask if it is 2 player game or with cpu
+        Integer answer = 0;
+        List<Integer> oneTwo = List.of(1, 2);
+        do {
+            System.out.println("""
+
+                Do you want to play game for 1 player or 2 players? 1/2
+                """);
+            answer = scanner.nextInt();
+            if (oneTwo.get(0).equals(answer)) {
+                player2 = "CPU";
+                askForNames();
+            } else if (oneTwo.get(1).equals(answer)){
+                askForNames();
+            }
+        } while (!oneTwo.contains(answer));
     }
 
     public void askForNames() {
 
-        //ask each player for names
-        //if there is only one player cpu will handle second one
+        if (player1 == null) {
+            System.out.println("""
+                    
+                    Player 1 please write desired nickname:
+                    """);
+            player1 = scanner.nextLine();
+        }
+
+        if (player2 == null) {
+            System.out.println("""
+                    
+                    Player 2 please write desired nickname:
+                    """);
+            player2 = scanner.nextLine();
+        }
     }
 
-    public void askHowManyGames() {
+    public int askHowManyGames() {
 
-        //ask how many games players want to play
+        Integer answer = 0;
+        do {
+            System.out.println("""
+                
+                How many games would you like to play? 
+                You can play from 1 to 9 games.
+                """);
+            answer = scanner.nextInt();
+        } while (!(answer > 0 && answer < 10));
+        return answer;
     }
 
     public void askForFigurePreference() {
 
-        //ask first player for his figure
+        String answer = "";
+        List<String> xOrY = List.of("X", "O");
+        do {
+            System.out.println("""
+                    
+                    Player please choose your figure: X or Y?
+                    """);
+            answer = scanner.nextLine().toUpperCase();
+        } while (!xOrY.contains(answer));
+
+        //TODO work over giving each player desired figures
     }
 
-    public void askForMove() {
+    public String askForMove(GameBoard gameBoard) {
 
-        //ask player which move he will take
+        String answer = "";
+        do {
+            System.out.println("""
+                    
+                    Player, make your move, by writing coordinates:
+                    """);
+            answer = scanner.nextLine();
+        } while (gameBoard.getBoard().containsValue(answer));
+        return answer;
     }
 
-    public void askForDecision() {
+    public boolean askForDecision() {
 
-        //ask for any offside decisions
+        String answer = "";
+        List<String> yesNo = List.of("y", "n");
+        do {
+            System.out.println("""
+                        
+                Are you sure? y/n
+                """);
+            answer = scanner.nextLine().toLowerCase();
+            if (yesNo.get(0).equals(answer)) {
+                return true;
+            } else if (yesNo.get(1).equals(answer)){
+                return false;
+            }
+        } while (!yesNo.contains(answer));
+        return false;
     }
 
-    public void displayScore() {
+    public void displayScore(List<String> score, int roundCount) {
 
-        //display final scoring
+        int p1TimesWon = 0;
+        int p2TimesWon = 0;
+        int draws = 0;
+        for (String string : score) {
+            if (string.equals("P1")) {
+                p1TimesWon++;
+            } else if (string.equals("P2")) {
+                p2TimesWon++;
+            } else {
+                draws++;
+            }
+        }
+        System.out.println("For " + roundCount + " rounds game:\n" +
+                        player1 + " won " + p1TimesWon + " times, while " +
+                        player2 + " won " + p2TimesWon + " times.\n" + 
+                        draws + " rounds resulted in draw.");
     }
 
-    public String askForRestart() {
+    public void askForRestart() {
 
-        return "y";
+        System.out.println("Do you want to play a new game? y/n");
+        answer = scanner.nextLine().toLowerCase();
+        if (answer.equals("y")) {
+            boolean restart = askForDecision();
+            if (restart) {
+                GameEngine gameEngine = new GameEngine();
+                gameEngine.playGame();
+            }
+        }
     }
 
     public String askForQuit() {
