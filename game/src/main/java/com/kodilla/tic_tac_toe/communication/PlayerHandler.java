@@ -8,9 +8,8 @@ import com.kodilla.tic_tac_toe.gui.GameBoard;
 
 public class PlayerHandler {
 
-    private String player1;
-    private String player2;
-    private Map<String, String> figures = Map.of("P1", "X", "P2", "O");
+    private Map<String, Map<String, Integer>> players = new HashMap<>(Map.of("X", new HashMap<>(),
+        "O", new HashMap<>()));
     private AnswerProcessor answerProcessor = new AnswerProcessor();
     private Scanner scanner = new Scanner(System.in);
 
@@ -53,25 +52,29 @@ public class PlayerHandler {
         do {
             System.out.println("\nDo you want to play game for 1 player or 2 players? 1/2");
             answer = scanner.nextInt();
+            scanner.nextLine();
             if (answerProcessor.oneOrTwo(answer)) {
-                player2 = "CPU";
+                players.replace("O", Map.of("CPU", 0));
                 askForNames();
             } else if (!answerProcessor.oneOrTwo(answer)){
                 askForNames();
             }
-        } while (!answerProcessor.oneOrTwoLoopCheck(answer));
+        } while (answerProcessor.oneOrTwoLoopCheck(answer));
     }
 
     public void askForNames() {
 
-        if (player1 == null) {
+        if (!players.get("O").containsKey("CPU")) {
             System.out.println("\nPlayer X please write desired nickname:");
-            player1 = scanner.nextLine();
-        }
-
-        if (player2 == null) {
+            String player1name = scanner.nextLine();
+            players.replace("X", Map.of(player1name, 0));
             System.out.println("\nPlayer O please write desired nickname:");
-            player2 = scanner.nextLine();
+            String player2name = scanner.nextLine();
+            players.replace("O", Map.of(player2name, 0));
+        } else {
+            System.out.println("\nPlayer X please write desired nickname:");
+            String player1name = scanner.nextLine();
+            players.replace("X", Map.of(player1name, 0));
         }
     }
 
@@ -81,15 +84,16 @@ public class PlayerHandler {
         do {
             System.out.println("\nHow many games would you like to play? 1-9");
             answer = scanner.nextInt();
+            scanner.nextLine();
         } while (!(answer > 0 && answer < 10));
         return answer;
     }
 
-    public String askForMove(GameBoard gameBoard) {
+    public String askForMove(String player, GameBoard gameBoard) {
 
         String answer;
         do {
-            System.out.println(player1 + ", make your move by writing coordinates:");
+            System.out.println(player + ", make your move by writing coordinates:");
             answer = scanner.nextLine();
         } while (gameBoard.getBoard().containsValue(answer));
         return answer;
@@ -110,21 +114,27 @@ public class PlayerHandler {
         return false;
     }
 
-    public void displayScore(List<String> score, int roundCount) {
+    public void displayScore(int gameCount) {
 
         int p1TimesWon = 0;
         int p2TimesWon = 0;
         int draws = 0;
-        for (String string : score) {
-            if (string.equals("P1")) {
-                p1TimesWon++;
-            } else if (string.equals("P2")) {
-                p2TimesWon++;
+        String player1 = null;
+        String player2 = null;
+
+        for (Map.Entry<String, Map<String, Integer>> entry : players.entrySet()) {
+            if (entry.getKey().equals("X")) {
+                Map<String, Integer> p1Stats = entry.getValue();
+                player1 = p1Stats.keySet().toString();
+                p1TimesWon = p1Stats.get(player1);
             } else {
-                draws++;
+                Map<String, Integer> p2Stats = entry.getValue();
+                player2 = p2Stats.keySet().toString();
+                p1TimesWon = p2Stats.get(player2);
             }
         }
-        System.out.println("For " + roundCount + " rounds game:\n" +
+
+        System.out.println("For " + gameCount + " rounds game:\n" +
             player1 + " won " + p1TimesWon + " times, while " +
             player2 + " won " + p2TimesWon + " times.\n" +
             draws + " rounds resulted in draw.");
@@ -157,29 +167,19 @@ public class PlayerHandler {
         return roundCounter;
     }
 
+    public void displayRoundNumber(int round, int gameCount) {
+
+        System.out.println("\nRound " + round + " of game number " + gameCount);
+    }
+
     //=========== SETTERS & GETTERS
 
-    public void setPlayer1(String player1) {
-        this.player1 = player1;
+
+    public Map<String, Map<String, Integer>> getPlayers() {
+        return players;
     }
 
-    public void setPlayer2(String player2) {
-        this.player2 = player2;
-    }
-
-    public String getPlayer1() {
-        return player1;
-    }
-
-    public String getPlayer2() {
-        return player2;
-    }
-
-    public Map<String, String> getFigures() {
-        return figures;
-    }
-
-    public void setFigures(Map<String, String> figures) {
-        this.figures = figures;
+    public void setPlayers(Map<String, Map<String, Integer>> players) {
+        this.players = players;
     }
 }
