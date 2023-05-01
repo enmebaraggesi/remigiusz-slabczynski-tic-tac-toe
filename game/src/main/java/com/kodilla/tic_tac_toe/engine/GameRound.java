@@ -7,46 +7,55 @@ import java.util.*;
 
 public class GameRound {
 
-    private int roundNumber = 0;
+    private int roundNumber = 1;
     private int gameCount = 1;
 
-    public void playRound(PlayerHandler playerHandler, GameBoard gameBoard,
+    public String playRound(PlayerHandler playerHandler, GameBoard gameBoard,
                           int random) {
 
         //TODO round structure
-        List<String> randomFigures = List.of("X", "O");
-        String first = randomFigures.get(random);
-        String second = randomFigures.get(0);
-        if (random == 0) {
-            second = randomFigures.get(1);
+        String winner = "";
+        List<String> playersFigures = new ArrayList<>();
+        for (Map.Entry<String, String> figures : playerHandler.getPlayers().entrySet()) {
+            playersFigures.add(figures.getKey());
         }
 
-        playerHandler.displayRoundNumber(roundNumber, gameCount);
-        Map<String, Integer> firstPlayer = playerHandler.getPlayers().get(first);
-        String firstPlayerName = firstPlayer.keySet().toString();
-        System.out.println(firstPlayerName + ", it's your turn.");
-        BoardDisplay boardDisplay = new BoardDisplay();
-        Map<String, String> actualBoard = gameBoard.getBoard();
-        boardDisplay.displayBoard(actualBoard);
-        String firstPlayerMove = playerHandler.askForMove(firstPlayerName, gameBoard);
-        actualBoard.put(firstPlayerMove, first);
-        //TODO if winning/draw conditions - finish
-                //if other decision than move
-                    //save game
-                    //restart game
-                    //quit game
-        Map<String, Integer> secondPlayer = playerHandler.getPlayers().get(second);
-        String secondPlayerName = secondPlayer.keySet().toString();
-        System.out.println(secondPlayerName + ", it's your turn.");
-        boardDisplay.displayBoard(actualBoard);
-        String secondPlayerMove = playerHandler.askForMove(secondPlayerName, gameBoard);
-        actualBoard.put(secondPlayerMove, second);
-        //TODO if winning/draw conditions - finish
-                //if other decision than move
-                //save game
-                //restart game
-                //quit game
-        roundNumber++;
+        String firstPlayerFigure = playersFigures.get(random);
+        playersFigures.remove(random);
+        String secondPlayerFigure = playersFigures.get(0);
+
+        while (roundNumber < 2) {
+            playerHandler.displayRoundNumber(roundNumber, gameCount);
+            String firstPlayerName = playerHandler.getPlayers().get(firstPlayerFigure);
+            System.out.println(firstPlayerName + ", it's your turn.");
+
+            BoardDisplay boardDisplay = new BoardDisplay();
+            Map<String, String> actualBoard = gameBoard.getBoard();
+            boardDisplay.displayBoard(actualBoard);
+
+            String firstPlayerMove = playerHandler.askForMove(secondPlayerFigure, gameBoard);
+            actualBoard.put(firstPlayerMove, firstPlayerFigure);
+            //TODO if winning/draw conditions - finish
+            //if other decision than move
+            //save game
+            //restart game
+            //quit game
+            String secondPlayerName = playerHandler.getPlayers().get(secondPlayerFigure);
+            System.out.println(secondPlayerName + ", it's your turn.");
+
+            boardDisplay.displayBoard(actualBoard);
+
+            String secondPlayerMove = playerHandler.askForMove(secondPlayerName, gameBoard);
+            actualBoard.put(secondPlayerMove, secondPlayerFigure);
+            //TODO if winning/draw conditions - finish
+            //if other decision than move
+            //save game
+            //restart game
+            //quit game
+            winner = firstPlayerName;
+            roundNumber++;
+        }
+        return winner;
     }
 
     //============ GETTER & SETTER

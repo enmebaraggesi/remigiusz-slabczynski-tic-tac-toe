@@ -8,8 +8,9 @@ import com.kodilla.tic_tac_toe.gui.GameBoard;
 
 public class PlayerHandler {
 
-    private Map<String, Map<String, Integer>> players = new HashMap<>(Map.of("X", new HashMap<>(),
-        "O", new HashMap<>()));
+    private String player1Name = "";
+    private String player2Name = "";
+    private Map<String, String> players = new HashMap<>(Map.of("X", "", "O", ""));
     private AnswerProcessor answerProcessor = new AnswerProcessor();
     private Scanner scanner = new Scanner(System.in);
 
@@ -54,7 +55,8 @@ public class PlayerHandler {
             answer = scanner.nextInt();
             scanner.nextLine();
             if (answerProcessor.oneOrTwo(answer)) {
-                players.replace("O", Map.of("CPU", 0));
+                player2Name = "CPU";
+                players.put("O", player2Name);
                 askForNames();
             } else if (!answerProcessor.oneOrTwo(answer)){
                 askForNames();
@@ -64,17 +66,17 @@ public class PlayerHandler {
 
     public void askForNames() {
 
-        if (!players.get("O").containsKey("CPU")) {
+        if (!players.get("O").equals("CPU")) {
             System.out.println("\nPlayer X please write desired nickname:");
-            String player1name = scanner.nextLine();
-            players.replace("X", Map.of(player1name, 0));
+            player1Name = scanner.nextLine();
+            players.put("X", player1Name);
             System.out.println("\nPlayer O please write desired nickname:");
-            String player2name = scanner.nextLine();
-            players.replace("O", Map.of(player2name, 0));
+            player2Name = scanner.nextLine();
+            players.put("O", player2Name);
         } else {
             System.out.println("\nPlayer X please write desired nickname:");
-            String player1name = scanner.nextLine();
-            players.replace("X", Map.of(player1name, 0));
+            player1Name = scanner.nextLine();
+            players.put("X", player1Name);
         }
     }
 
@@ -95,7 +97,7 @@ public class PlayerHandler {
         do {
             System.out.println(player + ", make your move by writing coordinates:");
             answer = scanner.nextLine();
-        } while (gameBoard.getBoard().containsValue(answer));
+        } while (!gameBoard.getBoard().get(answer).equals(" "));
         return answer;
     }
 
@@ -114,29 +116,19 @@ public class PlayerHandler {
         return false;
     }
 
-    public void displayScore(int gameCount) {
+    public void displayScore(int gameCount, List<String> winnersTab) {
 
-        int p1TimesWon = 0;
-        int p2TimesWon = 0;
-        int draws = 0;
-        String player1 = null;
-        String player2 = null;
+        long p1TimesWon = winnersTab.stream()
+            .filter(name -> name.equals(player1Name))
+            .count();
+        long p2TimesWon = winnersTab.stream()
+            .filter(name -> name.equals(player2Name))
+            .count();
+        long draws = gameCount - (p1TimesWon + p2TimesWon);
 
-        for (Map.Entry<String, Map<String, Integer>> entry : players.entrySet()) {
-            if (entry.getKey().equals("X")) {
-                Map<String, Integer> p1Stats = entry.getValue();
-                player1 = p1Stats.keySet().toString();
-                p1TimesWon = p1Stats.get(player1);
-            } else {
-                Map<String, Integer> p2Stats = entry.getValue();
-                player2 = p2Stats.keySet().toString();
-                p1TimesWon = p2Stats.get(player2);
-            }
-        }
-
-        System.out.println("For " + gameCount + " rounds game:\n" +
-            player1 + " won " + p1TimesWon + " times, while " +
-            player2 + " won " + p2TimesWon + " times.\n" +
+        System.out.println("For " + gameCount + " games played:\n" +
+            player1Name + " won " + p1TimesWon + " times, while " +
+            player2Name + " won " + p2TimesWon + " times.\n" +
             draws + " rounds resulted in draw.");
     }
 
@@ -174,12 +166,27 @@ public class PlayerHandler {
 
     //=========== SETTERS & GETTERS
 
-
-    public Map<String, Map<String, Integer>> getPlayers() {
+    public Map<String, String> getPlayers() {
         return players;
     }
 
-    public void setPlayers(Map<String, Map<String, Integer>> players) {
+    public void setPlayers(Map<String, String> players) {
         this.players = players;
+    }
+
+    public String getPlayer1Name() {
+        return player1Name;
+    }
+
+    public void setPlayer1Name(String player1Name) {
+        this.player1Name = player1Name;
+    }
+
+    public String getPlayer2Name() {
+        return player2Name;
+    }
+
+    public void setPlayer2Name(String player2Name) {
+        this.player2Name = player2Name;
     }
 }

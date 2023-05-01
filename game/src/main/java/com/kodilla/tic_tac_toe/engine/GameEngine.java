@@ -3,14 +3,13 @@ package com.kodilla.tic_tac_toe.engine;
 import com.kodilla.tic_tac_toe.communication.PlayerHandler;
 import com.kodilla.tic_tac_toe.gui.GameBoard;
 
-import java.util.Random;
+import java.util.*;
 
 public class GameEngine {
 
     PlayerHandler playerHandler = new PlayerHandler();
     private Random random = new Random();
     GameBoard gameBoard = new GameBoard();
-    private int maxGames;
 
     public void playGame() {
 
@@ -19,14 +18,18 @@ public class GameEngine {
         playerHandler.explainRules();
         playerHandler.askForGameLoad();
         playerHandler.askHowManyPlayers();
-        maxGames = playerHandler.askHowManyGames();
+        int maxGames = playerHandler.askHowManyGames();
 
         GameRound gameRound = new GameRound();
         int gameCount = gameRound.getGameCount();
+
+        List<String> winnersTab = new ArrayList<>();
+
         while (!(gameCount > maxGames)) {
-            int randomNumber = random.nextInt(2);
-            gameRound.playRound(playerHandler, gameBoard, randomNumber);
-            playerHandler.displayScore(gameCount);
+            int randomStartingPlayer = random.nextInt(2);
+            String winner = gameRound.playRound(playerHandler, gameBoard, randomStartingPlayer);
+            winnersTab.add(winner);
+            playerHandler.displayScore(gameCount, winnersTab);
             gameCount++;
         }
     }
