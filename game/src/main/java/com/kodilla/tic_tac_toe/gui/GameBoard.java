@@ -4,18 +4,21 @@ import java.util.*;
 
 public class GameBoard {
 
-    public Map<String, String> board = new HashMap<>(Map.of(
-        "00", " ", "01", " ", "02", " ",
-        "10", " ", "11", " ", "12", " ",
-        "20", " ", "21", " ", "22", " "
-        ));
+    public String[][] board = new String[3][3];
 
-    public Map<String, String> getBoard() {
+    public void displayBoard() {
+
+        for (String[] strings : board) {
+            System.out.println("|" + strings[0] + "|" + strings[1] + "|" + strings[2] + "|");
+        }
+    }
+
+    public String[][] getBoard() {
 
         return board;
     }
 
-    public void setBoard(Map<String, String> board) {
+    public void setBoard(String[][] board) {
 
         this.board = board;
     }

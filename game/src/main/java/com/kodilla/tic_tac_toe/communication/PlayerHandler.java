@@ -91,13 +91,17 @@ public class PlayerHandler {
         return answer;
     }
 
-    public String askForMove(String player, GameBoard gameBoard) {
+    public int[] askForMove(String player, GameBoard gameBoard) {
 
-        String answer;
+        int[] answer = new int[2];
+        String[][] board = gameBoard.getBoard();
+
         do {
             System.out.println(player + ", make your move by writing coordinates:");
-            answer = scanner.nextLine();
-        } while (!gameBoard.getBoard().get(answer).equals(" "));
+            for (int i = 0; i < answer.length; i++) {
+                answer[i] = scanner.nextInt();
+            }
+        } while (!board[answer[0]][answer[1]].equals(" "));
         return answer;
     }
 

@@ -29,12 +29,10 @@ public class GameRound {
             String firstPlayerName = playerHandler.getPlayers().get(firstPlayerFigure);
             System.out.println(firstPlayerName + ", it's your turn.");
 
-            BoardDisplay boardDisplay = new BoardDisplay();
-            Map<String, String> actualBoard = gameBoard.getBoard();
-            boardDisplay.displayBoard(actualBoard);
+            gameBoard.displayBoard();
 
-            String firstPlayerMove = playerHandler.askForMove(secondPlayerFigure, gameBoard);
-            actualBoard.put(firstPlayerMove, firstPlayerFigure);
+            int[] firstPlayerMove = playerHandler.askForMove(firstPlayerName, gameBoard);
+            //TODO redo player move
             //TODO if winning/draw conditions - finish
             //if other decision than move
             //save game
@@ -43,10 +41,10 @@ public class GameRound {
             String secondPlayerName = playerHandler.getPlayers().get(secondPlayerFigure);
             System.out.println(secondPlayerName + ", it's your turn.");
 
-            boardDisplay.displayBoard(actualBoard);
+            gameBoard.displayBoard();
 
-            String secondPlayerMove = playerHandler.askForMove(secondPlayerName, gameBoard);
-            actualBoard.put(secondPlayerMove, secondPlayerFigure);
+            int[] secondPlayerMove = playerHandler.askForMove(secondPlayerName, gameBoard);
+            //TODO redo player move
             //TODO if winning/draw conditions - finish
             //if other decision than move
             //save game
