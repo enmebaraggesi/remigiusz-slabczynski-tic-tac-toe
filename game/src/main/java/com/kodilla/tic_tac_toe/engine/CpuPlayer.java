@@ -1,7 +1,5 @@
 package com.kodilla.tic_tac_toe.engine;
 
-import java.util.*;
-
 public class CpuPlayer {
 
     public int[] makeCPUMove(String[][] actualBoard, String cpuFigure, String oponentFigure) {
@@ -21,6 +19,31 @@ public class CpuPlayer {
     private static int[] blockMove(String[][] board, String oponentFigure) {
 
         return checkIfWinAhead(board, oponentFigure);
+    }
+
+    private static int[] forkMove(String[][] board, String oponentFigure) {
+
+        return null;
+    }
+
+    private static int[] forkBlockMove(String[][] board, String oponentFigure) {
+
+        return null;
+    }
+
+    private static int[] centerMove(String[][] board, String oponentFigure) {
+
+        return null;
+    }
+
+    private static int[] emptyCornerMove(String[][] board, String oponentFigure) {
+
+        return null;
+    }
+
+    private static int[] emptySideMove(String[][] board, String oponentFigure) {
+
+        return null;
     }
 
 

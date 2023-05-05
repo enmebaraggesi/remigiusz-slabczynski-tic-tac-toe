@@ -91,10 +91,9 @@ public class PlayerHandler {
         return answer;
     }
 
-    public int[] askForMove(String player, GameBoard gameBoard) {
+    public int[] askForMove(String player, String[][] board) {
 
         int[] answer = new int[2];
-        String[][] board = gameBoard.getBoard();
 
         do {
             System.out.println(player + ", make your move by writing coordinates:");

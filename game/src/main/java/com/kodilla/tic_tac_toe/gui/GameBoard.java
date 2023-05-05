@@ -1,10 +1,16 @@
 package com.kodilla.tic_tac_toe.gui;
 
-import java.util.*;
+import java.util.Arrays;
 
 public class GameBoard {
 
     public String[][] board = new String[3][3];
+
+    public GameBoard() {
+        for (String[] strings : board) {
+            Arrays.fill(strings, " ");
+        }
+    }
 
     public void displayBoard() {
 
