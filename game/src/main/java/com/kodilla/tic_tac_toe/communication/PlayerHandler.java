@@ -4,7 +4,6 @@ import java.util.*;
 
 import com.kodilla.tic_tac_toe.engine.GameEngine;
 import com.kodilla.tic_tac_toe.game_saver.*;
-import com.kodilla.tic_tac_toe.gui.GameBoard;
 
 public class PlayerHandler {
 
@@ -18,14 +17,19 @@ public class PlayerHandler {
 
         System.out.println("""
             Hi. This is a game of Tic Tac Toe.
-            You will play against your opponent by placing X or O figures on a 3x3 board.
-            First player to place orthogonal or diagonal lane of 3 same figures WINS.
+            You will play against your opponent by placing X or O figures on a board.
+            You can choose between playing on a 3x3 or 10x10 board.
+            In 3x3 game you win by having 3 figures in a line.
+            While in 10x10 game you have to put 5 figures in a line to win.
             Each turn you MUST take a move, by typing coordinates of desired move.
+            
             Here are coordinates map of game board:
             
-            |00|01|02|
-            |10|11|12|
-            |20|21|22|
+            | 00 | 01 | 02 |
+            
+            | 10 | 11 | 12 |
+            
+            | 20 | 21 | 22 |
             
             Have fun!
             """);
@@ -37,7 +41,10 @@ public class PlayerHandler {
 
         String answer;
         do {
-            System.out.println("\nDo you want to continue previously saved game? y/n");
+            System.out.println("""
+                
+                Do you want to continue previously saved game?
+                Type 'y' for YES or 'n' for NO.""");
             answer = scanner.nextLine();
             if (answerProcessor.yerOrNo(answer)) {
                 GameLoader.loadGame();
@@ -51,7 +58,10 @@ public class PlayerHandler {
 
         Integer answer;
         do {
-            System.out.println("\nDo you want to play game for 1 player or 2 players? 1/2");
+            System.out.println("""
+            
+            Do you want to play game for 1 player or 2 players?
+            Type '1' for player vs CPU or '2' for two players game.""");
             answer = scanner.nextInt();
             scanner.nextLine();
             if (answerProcessor.oneOrTwo(answer)) {
@@ -80,11 +90,31 @@ public class PlayerHandler {
         }
     }
 
+    public int askForGameVariant() {
+
+        int answer;
+        do {
+            System.out.println("""
+
+                Which variant of game you want to play?
+                Type '1' for 3x3 board or '2' for 10x10 board.""");
+            answer = scanner.nextInt();
+            scanner.nextLine();
+        } while (!(answer == 1 || answer == 2));
+        if (answer == 1) {
+            return 3;
+        }
+        return 10;
+    }
+
     public int askHowManyGames() {
 
         int answer;
         do {
-            System.out.println("\nHow many games would you like to play? 1-9");
+            System.out.println("""
+
+                How many games would you like to play?
+                You can choose between 1 and 9 games.""");
             answer = scanner.nextInt();
             scanner.nextLine();
         } while (!(answer > 0 && answer < 10));
@@ -108,7 +138,10 @@ public class PlayerHandler {
 
         String answer;
         do {
-            System.out.println("\nAre you sure? y/n");
+            System.out.println("""
+            
+            Are you sure?
+            Type 'y' for YES or 'n' for NO.""");
             answer = scanner.nextLine();
             if (answerProcessor.yerOrNo(answer)) {
                 return true;
@@ -122,12 +155,14 @@ public class PlayerHandler {
     public void displayScore(int gameCount, List<String> winnersTab) {
 
         long p1TimesWon = winnersTab.stream()
-            .filter(name -> name.equals(player1Name))
+            .filter(name -> name.equals("X"))
             .count();
         long p2TimesWon = winnersTab.stream()
-            .filter(name -> name.equals(player2Name))
+            .filter(name -> name.equals("O"))
             .count();
-        long draws = gameCount - (p1TimesWon + p2TimesWon);
+        long draws = winnersTab.stream()
+            .filter(name -> name.equals("DRAW"))
+            .count();
 
         System.out.println("For " + gameCount + " games played:\n" +
             player1Name + " won " + p1TimesWon + " times, while " +
@@ -137,7 +172,10 @@ public class PlayerHandler {
 
     public void askForRestart() {
 
-        System.out.println("\nDo you want to play a new game? y/n");
+        System.out.println("""
+        
+        Do you want to play a new game?
+        Type 'y' for YES or 'n' for NO.""");
         String answer = scanner.nextLine();
         if (answerProcessor.yerOrNo(answer)) {
             boolean restart = askForDecision();
@@ -150,7 +188,10 @@ public class PlayerHandler {
 
     public int askForQuit(int roundCounter, int maxRounds) {
 
-        System.out.println("\nDo you want to quit? y/n");
+        System.out.println("""
+        
+        Do you want to quit?
+        Type 'y' for YES or 'n' for NO.""");
         String answer = scanner.nextLine();
         if (answerProcessor.yerOrNo(answer)) {
             boolean quit = askForDecision();

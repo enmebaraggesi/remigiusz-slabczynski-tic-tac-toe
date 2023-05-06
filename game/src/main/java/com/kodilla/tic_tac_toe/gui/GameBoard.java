@@ -4,9 +4,11 @@ import java.util.Arrays;
 
 public class GameBoard {
 
-    public String[][] board = new String[3][3];
+    public String[][] board;
 
-    public GameBoard() {
+    public GameBoard(int gameVariant) {
+
+        this.board = new String[gameVariant][gameVariant];
         for (String[] strings : board) {
             Arrays.fill(strings, " ");
         }
@@ -14,9 +16,17 @@ public class GameBoard {
 
     public void displayBoard() {
 
+        StringBuilder stringBuilder = new StringBuilder();
         for (String[] strings : board) {
-            System.out.println("|" + strings[0] + "|" + strings[1] + "|" + strings[2] + "|");
+            stringBuilder.append("|");
+            for (int i = 0; i < strings.length; i++) {
+                stringBuilder.append(strings[i]).append("|");
+                if (i == strings.length - 1) {
+                    stringBuilder.append("\n");
+                }
+            }
         }
+        System.out.println(stringBuilder);
     }
 
     public String[][] getBoard() {

@@ -1,6 +1,6 @@
-package com.kodilla.tic_tac_toe.engine;
+package com.kodilla.tic_tac_toe.engine.cpu_player;
 
-public class CpuPlayer2 {
+public class CpuPlayerHard {
 
     public int[] cpuMoveMaker(String[][] board, String myFigure, String oponentFigure) {
 
@@ -39,36 +39,36 @@ public class CpuPlayer2 {
         return move;
     }
 
-    public static int checkIfFree(String slot) {
+    public int checkIfFree(String slot) {
 
         return (slot.equals(" ")) ? 0 : -500;
     }
 
-    public static int pointsForRows(String[] row, String figure) {
+    public int pointsForRows(String[] row, String figure) {
 
         int quantity = checkRows(row, figure);
         return (quantity == 2) ? 100 : quantity;
     }
 
-    public static int pointsAgainstRows(String[] row, String oponentFigure) {
+    public int pointsAgainstRows(String[] row, String oponentFigure) {
 
         int quantity = checkRows(row, oponentFigure);
         return (quantity == 2) ? 50 : quantity;
     }
 
-    public static int pointsForCols(String[] col, String figure) {
+    public int pointsForCols(String[] col, String figure) {
 
         int quantity = checkCols(col, figure);
         return (quantity == 2) ? 100 : quantity;
     }
 
-    public static int pointsAgainstCols(String[] col, String oponentFigure) {
+    public int pointsAgainstCols(String[] col, String oponentFigure) {
 
         int quantity = checkCols(col, oponentFigure);
         return (quantity == 2) ? 50 : quantity;
     }
 
-    public static int pointsForDiags(String[] diag1, String[] diag2, String figure) {
+    public int pointsForDiags(String[] diag1, String[] diag2, String figure) {
 
         int quantity1 = checkDiag(diag1, figure);
         int total1 = (quantity1 == 2) ? 100 : quantity1;
@@ -77,7 +77,7 @@ public class CpuPlayer2 {
         return total1 + total2;
     }
 
-    public static int pointsAgainstDiags(String[] diag1, String[] diag2, String oponentFigure) {
+    public int pointsAgainstDiags(String[] diag1, String[] diag2, String oponentFigure) {
 
         int quantity1 = checkDiag(diag1, oponentFigure);
         int total1 = (quantity1 == 2) ? 50 : quantity1;
@@ -86,7 +86,7 @@ public class CpuPlayer2 {
         return total1 + total2;
     }
 
-    public static int checkRows(String[] row, String figure) {
+    public int checkRows(String[] row, String figure) {
 
         int counter = 0;
         for (String slot : row) {
@@ -95,7 +95,7 @@ public class CpuPlayer2 {
         return counter;
     }
 
-    public static int checkCols(String[] col, String figure) {
+    public int checkCols(String[] col, String figure) {
 
         int counter = 0;
         for (String slot : col) {
@@ -104,7 +104,7 @@ public class CpuPlayer2 {
         return counter;
     }
 
-    public static int checkDiag(String[] diag, String figure) {
+    public int checkDiag(String[] diag, String figure) {
 
         int counter = 0;
         for (String slot : diag) {

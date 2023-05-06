@@ -1,7 +1,5 @@
 package com.kodilla.tic_tac_toe.game_saver;
 
-import java.nio.file.*;
-
 public class GameSaver {
 
     public static void saveGame() {
