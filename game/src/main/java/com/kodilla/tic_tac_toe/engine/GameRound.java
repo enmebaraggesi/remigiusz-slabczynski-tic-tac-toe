@@ -17,7 +17,7 @@ public class GameRound {
     }
 
     public String playRound(PlayerHandler playerHandler, GameBoard gameBoard,
-                            int random) {
+                            int random, int gameVariant) {
 
         List<String> playersFigures = new ArrayList<>();
         for (Map.Entry<String, String> figures : playerHandler.getPlayers().entrySet()) {
@@ -37,12 +37,12 @@ public class GameRound {
             String secondPlayerName = playerHandler.getPlayers().get(secondPlayerFigure);
             String winner;
 
-            winner = playTurn(gameBoard, firstPlayerFigure, firstPlayerName);
+            winner = playTurn(gameBoard, firstPlayerFigure, firstPlayerName, gameVariant);
             if (winner != null) {
                 return winner;
             }
             //if other decision than move - save restart quit game
-            winner = playTurn(gameBoard, secondPlayerFigure, secondPlayerName);
+            winner = playTurn(gameBoard, secondPlayerFigure, secondPlayerName, gameVariant);
             if (winner != null) {
                 return winner;
             }
@@ -50,7 +50,7 @@ public class GameRound {
         }
     }
 
-    public String playTurn(GameBoard gameBoard, String playerFigure, String playerName) {
+    public String playTurn(GameBoard gameBoard, String playerFigure, String playerName, int gameVariant) {
 
         String oponentFigure;
         if (playerFigure.equals("X")) {
@@ -60,7 +60,7 @@ public class GameRound {
         }
 
         String winner;
-        StatusChecker statusChecker = new StatusChecker();
+        ScoreChecker statusChecker = new ScoreChecker();
         String[][] board = gameBoard.getBoard();
 
         if (playerName.equals("CPU")) {
@@ -75,12 +75,12 @@ public class GameRound {
             board[firstPlayerMove[0]][firstPlayerMove[1]] = playerFigure;
         }
         gameBoard.displayBoard();
-        winner = statusChecker.checkIfWinner(board, playerFigure);
+        winner = statusChecker.checkIfWinner(board, playerFigure, gameVariant);
         if (winner != null) {
             return winner;
         }
         movesCounter++;
-        winner = statusChecker.checkIfDraw(movesCounter);
+        winner = statusChecker.checkIfDraw(movesCounter, gameVariant);
         return winner;
     }
 

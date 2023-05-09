@@ -2,6 +2,7 @@ package com.kodilla.tic_tac_toe.engine.cpu_player;
 
 public class CpuPlayerHard {
 
+    //TODO make cpu work in 10x10 mode and make it better at moving
     public int[] cpuMoveMaker(String[][] board, String myFigure, String oponentFigure) {
 
         int[][] pointsBoard = new int[3][3];
@@ -47,42 +48,42 @@ public class CpuPlayerHard {
     public int pointsForRows(String[] row, String figure) {
 
         int quantity = checkRows(row, figure);
-        return (quantity == 2) ? 100 : quantity;
+        return (quantity >= 2) ? 100 : quantity;
     }
 
     public int pointsAgainstRows(String[] row, String oponentFigure) {
 
         int quantity = checkRows(row, oponentFigure);
-        return (quantity == 2) ? 50 : quantity;
+        return (quantity >= 2) ? 50 : quantity;
     }
 
     public int pointsForCols(String[] col, String figure) {
 
         int quantity = checkCols(col, figure);
-        return (quantity == 2) ? 100 : quantity;
+        return (quantity >= 2) ? 100 : quantity;
     }
 
     public int pointsAgainstCols(String[] col, String oponentFigure) {
 
         int quantity = checkCols(col, oponentFigure);
-        return (quantity == 2) ? 50 : quantity;
+        return (quantity >= 2) ? 50 : quantity;
     }
 
     public int pointsForDiags(String[] diag1, String[] diag2, String figure) {
 
         int quantity1 = checkDiag(diag1, figure);
-        int total1 = (quantity1 == 2) ? 100 : quantity1;
+        int total1 = (quantity1 >= 2) ? 100 : quantity1;
         int quantity2 = checkDiag(diag2, figure);
-        int total2 = (quantity2 == 2) ? 100 : quantity2;
+        int total2 = (quantity2 >= 2) ? 100 : quantity2;
         return total1 + total2;
     }
 
     public int pointsAgainstDiags(String[] diag1, String[] diag2, String oponentFigure) {
 
         int quantity1 = checkDiag(diag1, oponentFigure);
-        int total1 = (quantity1 == 2) ? 50 : quantity1;
+        int total1 = (quantity1 >= 2) ? 50 : quantity1;
         int quantity2 = checkDiag(diag2, oponentFigure);
-        int total2 = (quantity2 == 2) ? 50 : quantity2;
+        int total2 = (quantity2 >= 2) ? 50 : quantity2;
         return total1 + total2;
     }
 

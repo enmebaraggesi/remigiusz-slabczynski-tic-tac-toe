@@ -8,7 +8,8 @@ public class GameBoard {
 
     public GameBoard(int gameVariant) {
 
-        this.board = new String[gameVariant][gameVariant];
+        int d = gameVariant * 2;
+        this.board = new String[d][d];
         for (String[] strings : board) {
             Arrays.fill(strings, " ");
         }

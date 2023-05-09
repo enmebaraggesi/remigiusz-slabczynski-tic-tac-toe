@@ -1,8 +1,6 @@
 package com.kodilla.tic_tac_toe;
 
-import com.kodilla.tic_tac_toe.communication.PlayerHandler;
 import com.kodilla.tic_tac_toe.engine.GameEngine;
-import com.kodilla.tic_tac_toe.gui.GameBoard;
 
 public class GameRunner {
 

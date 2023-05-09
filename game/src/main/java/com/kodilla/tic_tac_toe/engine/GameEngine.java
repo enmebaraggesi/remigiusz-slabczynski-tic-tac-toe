@@ -7,29 +7,37 @@ import java.util.*;
 
 public class GameEngine {
 
+    int gameCount = 0;
+    int maxGames;
+    int gameVariant;
     public void playGame() {
 
-        int gameCount = 1;
         List<String> winnersTab = new ArrayList<>();
-
         PlayerHandler playerHandler = new PlayerHandler();
-        playerHandler.explainRules();
-//        playerHandler.askForGameLoad();
-        playerHandler.askHowManyPlayers();
-//        int gameVariant = playerHandler.askForGameVariant();
-        int gameVariant = 3;
-        int maxGames = playerHandler.askHowManyGames();
+
+        collectGameDecisions(playerHandler);
 
         GameBoard gameBoard = new GameBoard(gameVariant);
         GameRound gameRound = new GameRound(gameCount);
-        while (!(gameCount > maxGames)) {
 
+        while (!(gameCount > maxGames)) {
+            gameCount++;
             Random random = new Random();
             int randomStartingPlayer = random.nextInt(2);
-            String winner = gameRound.playRound(playerHandler, gameBoard, randomStartingPlayer);
+
+            String winner = gameRound.playRound(playerHandler, gameBoard, randomStartingPlayer, gameVariant);
             winnersTab.add(winner);
+
             playerHandler.displayScore(gameCount, winnersTab);
-            gameCount++;
         }
+    }
+
+    private void collectGameDecisions(PlayerHandler playerHandler) {
+
+        playerHandler.explainRules();
+//        playerHandler.askForGameLoad();
+        playerHandler.askHowManyPlayers();
+        gameVariant = playerHandler.askForGameVariant();
+        maxGames = playerHandler.askHowManyGames();
     }
 }

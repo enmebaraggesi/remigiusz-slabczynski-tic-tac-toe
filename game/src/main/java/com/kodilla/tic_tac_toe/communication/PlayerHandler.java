@@ -21,18 +21,7 @@ public class PlayerHandler {
             You can choose between playing on a 3x3 or 10x10 board.
             In 3x3 game you win by having 3 figures in a line.
             While in 10x10 game you have to put 5 figures in a line to win.
-            Each turn you MUST take a move, by typing coordinates of desired move.
-            
-            Here are coordinates map of game board:
-            
-            | 00 | 01 | 02 |
-            
-            | 10 | 11 | 12 |
-            
-            | 20 | 21 | 22 |
-            
-            Have fun!
-            """);
+            Each turn you MUST take a move, by typing coordinates of desired move.""");
     }
 
     public void askForGameLoad() {
@@ -101,10 +90,49 @@ public class PlayerHandler {
             answer = scanner.nextInt();
             scanner.nextLine();
         } while (!(answer == 1 || answer == 2));
+
         if (answer == 1) {
+            System.out.println("""
+                
+                Here are coordinates map of game board:
+            
+                | 00 | 01 | 02 |
+            
+                | 10 | 11 | 12 |
+            
+                | 20 | 21 | 22 |
+            
+                Have fun!
+                """);
             return 3;
         }
-        return 10;
+        System.out.println("""
+            
+            Here are coordinates map of game board:
+            
+            | 00 | 01 | 02 | 03 | 04 | 05 | 06 | 07 | 08 | 09 |
+            
+            | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 |
+            
+            | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 |
+            
+            | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 |
+            
+            | 40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 |
+            
+            | 50 | 51 | 52 | 53 | 54 | 55 | 56 | 57 | 58 | 59 |
+            
+            | 60 | 61 | 62 | 63 | 64 | 65 | 66 | 67 | 68 | 69 |
+            
+            | 70 | 71 | 72 | 73 | 74 | 75 | 76 | 77 | 78 | 79 |
+            
+            | 80 | 81 | 82 | 83 | 84 | 85 | 86 | 87 | 88 | 89 |
+            
+            | 90 | 91 | 92 | 93 | 94 | 95 | 96 | 97 | 98 | 99 |
+            
+            Have fun!
+            """);
+        return 5;
     }
 
     public int askHowManyGames() {
@@ -125,31 +153,20 @@ public class PlayerHandler {
 
         int[] answer = new int[2];
 
-        do {
-            System.out.println(player + ", make your move by writing coordinates:");
-            for (int i = 0; i < answer.length; i++) {
-                answer[i] = scanner.nextInt();
-            }
-        } while (!board[answer[0]][answer[1]].equals(" "));
+        //TODO write exception properly
+        try {
+            do {
+                System.out.println(player + ", make your move by writing coordinates:");
+                String preprocessedAnswer = scanner.nextLine();
+                String[] answerArray = preprocessedAnswer.split("");
+                for (int i = 0; i < preprocessedAnswer.length(); i++) {
+                    answer[i] = Integer.parseInt(answerArray[i]);
+                }
+            } while (!board[answer[0]][answer[1]].equals(" "));
+        } catch (IndexOutOfBoundsException e) {
+            throw e;
+        }
         return answer;
-    }
-
-    public boolean askForDecision() {
-
-        String answer;
-        do {
-            System.out.println("""
-            
-            Are you sure?
-            Type 'y' for YES or 'n' for NO.""");
-            answer = scanner.nextLine();
-            if (answerProcessor.yerOrNo(answer)) {
-                return true;
-            } else if (!answerProcessor.yerOrNo(answer)){
-                return false;
-            }
-        } while (answerProcessor.yesOrNoLoopCheck(answer));
-        return false;
     }
 
     public void displayScore(int gameCount, List<String> winnersTab) {
@@ -178,11 +195,8 @@ public class PlayerHandler {
         Type 'y' for YES or 'n' for NO.""");
         String answer = scanner.nextLine();
         if (answerProcessor.yerOrNo(answer)) {
-            boolean restart = askForDecision();
-            if (restart) {
-                GameEngine gameEngine = new GameEngine();
-                gameEngine.playGame();
-            }
+            GameEngine gameEngine = new GameEngine();
+            gameEngine.playGame();
         }
     }
 
@@ -194,18 +208,15 @@ public class PlayerHandler {
         Type 'y' for YES or 'n' for NO.""");
         String answer = scanner.nextLine();
         if (answerProcessor.yerOrNo(answer)) {
-            boolean quit = askForDecision();
-            if (quit) {
-                GameSaver.saveGame();
-                return maxRounds;
-            }
+            GameSaver.saveGame();
+            return maxRounds;
         }
         return roundCounter;
     }
 
     public void displayRoundNumber(int round, int gameCount) {
 
-        System.out.println("\nRound " + round + " of game number " + gameCount);
+        System.out.println("\nRound " + round + " / Game " + gameCount);
     }
 
     //=========== SETTERS & GETTERS
