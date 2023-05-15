@@ -1,34 +1,26 @@
 package com.kodilla.tic_tac_toe.engine;
 
-import com.kodilla.tic_tac_toe.communication.PlayerHandler;
+import com.kodilla.tic_tac_toe.misc.PlayerHandler;
 import com.kodilla.tic_tac_toe.gui.GameBoard;
 
 import java.util.*;
 
 public class GameEngine {
 
-    int gameCount = 0;
+    int gameCount = 1;
     int maxGames;
     int gameVariant;
     public void playGame() {
 
-        List<String> winnersTab = new ArrayList<>();
         PlayerHandler playerHandler = new PlayerHandler();
-
         collectGameDecisions(playerHandler);
-
-        GameBoard gameBoard = new GameBoard(gameVariant);
         GameRound gameRound = new GameRound(gameCount);
 
         while (!(gameCount > maxGames)) {
+            GameBoard gameBoard = new GameBoard(gameVariant);
+            gameRound.playRound(playerHandler, gameBoard);
+            playerHandler.displayScore(gameCount);
             gameCount++;
-            Random random = new Random();
-            int randomStartingPlayer = random.nextInt(2);
-
-            String winner = gameRound.playRound(playerHandler, gameBoard, randomStartingPlayer, gameVariant);
-            winnersTab.add(winner);
-
-            playerHandler.displayScore(gameCount, winnersTab);
         }
     }
 

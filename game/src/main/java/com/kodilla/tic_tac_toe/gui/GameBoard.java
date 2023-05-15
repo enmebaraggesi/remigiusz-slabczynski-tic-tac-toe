@@ -4,12 +4,11 @@ import java.util.Arrays;
 
 public class GameBoard {
 
-    public String[][] board;
+    private String[][] board;
 
     public GameBoard(int gameVariant) {
 
-        int d = gameVariant * 2;
-        this.board = new String[d][d];
+        this.board = new String[gameVariant][gameVariant];
         for (String[] strings : board) {
             Arrays.fill(strings, " ");
         }

@@ -1,43 +1,97 @@
-package com.kodilla.tic_tac_toe.engine.cpu_player;
+package com.kodilla.tic_tac_toe.misc;
 
-public class CpuPlayerHard {
+import com.kodilla.tic_tac_toe.misc.*;
 
-    //TODO make cpu work in 10x10 mode and make it better at moving
-    public int[] cpuMoveMaker(String[][] board, String myFigure, String oponentFigure) {
+import java.util.*;
 
-        int[][] pointsBoard = new int[3][3];
+public class CpuPlayer implements PlayersMoving {
 
-        String[] diags1 = {board[0][0], board[1][1], board[2][2]};
-        String[] diags2 = {board[0][2], board[1][1], board[2][0]};
-        int pointsForDiags = pointsForDiags(diags1,diags2, myFigure);
-        int pointsAgainstDiags = pointsAgainstDiags(diags1,diags2, oponentFigure);
+    private String name;
+    private String figure;
+
+    public CpuPlayer(String name, String figure) {
+        this.name = name;
+        this.figure = figure;
+    }
+
+    @Override
+    public Move makeAMove(String[][] board) {
+
+        System.out.println("\n" + name + " made its move\n");
+        if (name.contains("easy")) {
+            return easyMove(board);
+        }
+        return hardMove(board);
+    }
+
+    private Move easyMove(String[][] board) {
+
+        Random random = new Random();
+        List<Move> listOfMoves = new ArrayList<>();
+        int counter = 0;
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[i][j].equals(" ")) {
+                    counter++;
+                    listOfMoves.add(new Move(i, j));
+                }
+            }
+        }
+        return listOfMoves.get(random.nextInt(counter));
+    }
+
+    public Move hardMove(String[][] board) {
+
+        int variant = board.length;
+        int[][] scoredBoard = new int[variant][variant];
+
+        String[] diags1 = new String[variant];
+        for (int i = 0; i < variant; i++) {
+            diags1[i] = board[i][i];
+        }
+
+        String[] diags2 = new String[variant];
+        for (int i = 0; i < variant; i++) {
+            diags2[i] = board[i][variant - 1 - i];
+        }
+
+        int pointsForDiags = pointsForDiags(diags1,diags2, figure);
+        int pointsAgainstDiags = pointsAgainstDiags(diags1,diags2, oponentFigure());
         int pointsDiags = pointsForDiags + pointsAgainstDiags;
 
         for (int i = 0; i < board.length; i++) {
 
-            int pointsRows = pointsForRows(board[i], myFigure) + pointsAgainstRows(board[i], oponentFigure);
+            int pointsRows = pointsForRows(board[i], figure) + pointsAgainstRows(board[i], oponentFigure());
 
             for (int j = 0; j < board[i].length; j++) {
 
                 String[] col = {board[0][j], board[1][j], board[2][j]};
-                int pointsCols = pointsForCols(col, myFigure) + pointsAgainstCols(col, oponentFigure);
+                int pointsCols = pointsForCols(col, figure) + pointsAgainstCols(col, oponentFigure());
                 int pointsIfFree = checkIfFree(board[i][j]);
-                pointsBoard[i][j] = pointsCols + pointsRows + pointsDiags + pointsIfFree;
+                scoredBoard[i][j] = pointsCols + pointsRows + pointsDiags + pointsIfFree;
             }
         }
 
         int highest = Integer.MIN_VALUE;
-        int[] move = new int[2];
-        for (int i = 0; i < pointsBoard.length; i++) {
-            for (int j = 0; j < pointsBoard[i].length; j++) {
-                if(pointsBoard[i][j] > highest) {
-                    highest = pointsBoard[i][j];
-                    move[0] = i;
-                    move[1] = j;
+        Move move = new Move(-1, -1);
+        for (int i = 0; i < scoredBoard.length; i++) {
+            for (int j = 0; j < scoredBoard[i].length; j++) {
+                if(scoredBoard[i][j] > highest) {
+                    highest = scoredBoard[i][j];
+                    move.setX(i);
+                    move.setY(j);
                 }
             }
         }
         return move;
+    }
+
+    private String oponentFigure() {
+
+        if (figure.equals("X")) {
+            return "O";
+        }
+        return "X";
     }
 
     public int checkIfFree(String slot) {

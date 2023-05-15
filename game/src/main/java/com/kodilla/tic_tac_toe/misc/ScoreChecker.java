@@ -1,35 +1,33 @@
-package com.kodilla.tic_tac_toe.engine;
+package com.kodilla.tic_tac_toe.misc;
 
 public class ScoreChecker {
 
-    public String checkIfWinner(String[][] board, String figure, int gameVariant) {
+    public static boolean checkIfWinner(String[][] board, Player player, int gameVariant) {
 
-        boolean diag1Check = checkDiagsLR(board, figure, gameVariant);
-        boolean diag2Check = checkDiagsRL(board, figure, gameVariant);
-        boolean rowsCheck = checkRows(board, figure, gameVariant);
-        boolean colsCheck = checkCols(board, figure, gameVariant);
+        boolean diag1Check = checkDiagsLR(board, player.getFigure(), gameVariant);
+        boolean diag2Check = checkDiagsRL(board, player.getFigure(), gameVariant);
+        boolean rowsCheck = checkRows(board, player.getFigure(), gameVariant);
+        boolean colsCheck = checkCols(board, player.getFigure(), gameVariant);
 
         if (diag1Check || diag2Check || rowsCheck || colsCheck) {
-            return figure;
+            player.updateScore();
+            return true;
         }
-        return null;
+        return false;
     }
 
-    public String checkIfDraw(int movesCounter, int gameVariant) {
+    public static boolean checkIfDraw(int movesCounter, int gameVariant) {
 
-        String draw;
-        if (movesCounter == (gameVariant * gameVariant)) {
-            draw = "DRAW";
-            return draw;
-        }
-        return null;
+        return (movesCounter == (gameVariant * gameVariant));
+
     }
 
-    private boolean checkRows(String[][] board, String figure, int gameVariant) {
+    private static boolean checkRows(String[][] board, String figure, int gameVariant) {
 
         for (String[] row : board) {
             int counter = 0;
 
+            //Stream połączenie stringów w ciąg i poszukanie
             for (String slot : row) {
                 counter += (slot.equals(figure)) ? 1 : 0;
 
@@ -41,7 +39,7 @@ public class ScoreChecker {
         return false;
     }
 
-    private boolean checkCols(String[][] board, String figure, int gameVariant) {
+    private static boolean checkCols(String[][] board, String figure, int gameVariant) {
 
         for (int i = 0; i < board.length; i++) {
             int counter = 0;
@@ -57,7 +55,7 @@ public class ScoreChecker {
         return false;
     }
 
-    private boolean checkDiagsLR(String[][] board, String figure, int gameVariant) {
+    private static boolean checkDiagsLR(String[][] board, String figure, int gameVariant) {
 
         int counter = 0;
         for (int i = 0; i < board.length; i++) {
@@ -66,7 +64,7 @@ public class ScoreChecker {
         return counter == gameVariant;
     }
 
-    private boolean checkDiagsRL(String[][] board, String figure, int gameVariant) {
+    private static boolean checkDiagsRL(String[][] board, String figure, int gameVariant) {
 
         int counter = 0;
         int length = board.length;
