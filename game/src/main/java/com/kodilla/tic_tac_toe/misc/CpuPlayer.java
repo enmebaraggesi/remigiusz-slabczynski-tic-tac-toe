@@ -1,7 +1,5 @@
 package com.kodilla.tic_tac_toe.misc;
 
-import com.kodilla.tic_tac_toe.misc.*;
-
 import java.util.*;
 
 public class CpuPlayer implements PlayersMoving {

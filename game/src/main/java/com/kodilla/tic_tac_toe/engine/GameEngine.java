@@ -3,8 +3,6 @@ package com.kodilla.tic_tac_toe.engine;
 import com.kodilla.tic_tac_toe.misc.PlayerHandler;
 import com.kodilla.tic_tac_toe.gui.GameBoard;
 
-import java.util.*;
-
 public class GameEngine {
 
     int gameCount = 1;

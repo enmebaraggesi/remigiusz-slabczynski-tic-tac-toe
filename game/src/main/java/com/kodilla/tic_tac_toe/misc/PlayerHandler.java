@@ -185,7 +185,7 @@ public class PlayerHandler {
         Type 'y' for YES or 'n' for NO.""");
         String answer = scanner.nextLine();
         if (yerOrNo(answer)) {
-            GameSaver.saveGame();
+//            GameSaver.saveGame();
             return maxRounds;
         }
         return roundCounter;

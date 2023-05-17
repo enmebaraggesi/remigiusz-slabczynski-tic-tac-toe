@@ -11,22 +11,20 @@ class MiscProcessorTestSuite {
     void yerOrNo() {
 
         //given
-        MiscProcessor miscProcessor = new MiscProcessor();
 
         //when
         String answerY = "y";
         String answerN = "n";
 
         //then
-        assertTrue(miscProcessor.yerOrNo(answerY));
-        assertFalse(miscProcessor.yerOrNo(answerN));
+        assertTrue(MiscProcessor.yerOrNo(answerY));
+        assertFalse(MiscProcessor.yerOrNo(answerN));
     }
 
     @Test
     void yesOrNoLoopCheck() {
 
         //given
-        MiscProcessor miscProcessor = new MiscProcessor();
 
         //when
         String answerY = "y";
@@ -34,31 +32,29 @@ class MiscProcessorTestSuite {
         String answerX = "x";
 
         //then
-        assertFalse(miscProcessor.yesOrNoLoopCheck(answerY));
-        assertFalse(miscProcessor.yesOrNoLoopCheck(answerN));
-        assertTrue(miscProcessor.yesOrNoLoopCheck(answerX));
+        assertFalse(MiscProcessor.yesOrNoLoopCheck(answerY));
+        assertFalse(MiscProcessor.yesOrNoLoopCheck(answerN));
+        assertTrue(MiscProcessor.yesOrNoLoopCheck(answerX));
     }
 
     @Test
     void oneOrTwo() {
 
         //given
-        MiscProcessor miscProcessor = new MiscProcessor();
 
         //when
         Integer one = 1;
         Integer two = 2;
 
         //then
-        assertTrue(miscProcessor.oneOrTwo(one));
-        assertFalse(miscProcessor.oneOrTwo(two));
+        assertTrue(MiscProcessor.oneOrTwo(one));
+        assertFalse(MiscProcessor.oneOrTwo(two));
     }
 
     @Test
     void oneOrTwoLoopCheck() {
 
         //given
-        MiscProcessor miscProcessor = new MiscProcessor();
 
         //when
         Integer one = 1;
@@ -66,8 +62,8 @@ class MiscProcessorTestSuite {
         Integer three = 3;
 
         //then
-        assertFalse(miscProcessor.oneOrTwoLoopCheck(one));
-        assertFalse(miscProcessor.oneOrTwoLoopCheck(two));
-        assertTrue(miscProcessor.oneOrTwoLoopCheck(three));
+        assertFalse(MiscProcessor.oneOrTwoLoopCheck(one));
+        assertFalse(MiscProcessor.oneOrTwoLoopCheck(two));
+        assertTrue(MiscProcessor.oneOrTwoLoopCheck(three));
     }
 }

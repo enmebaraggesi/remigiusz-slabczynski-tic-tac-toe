@@ -1,23 +1,30 @@
 package com.kodilla.tic_tac_toe;
 
 import com.kodilla.tic_tac_toe.engine.GameEngine;
-import javafx.application.Application;
-import javafx.scene.*;
-import javafx.scene.image.Image;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-
+import com.kodilla.tic_tac_toe.game_saver.GameSaver;
+import com.kodilla.tic_tac_toe.gui.GameBoard;
+import com.kodilla.tic_tac_toe.misc.FileCreator;
 
 
 public class GameRunner {
 
-    private Image chalkboard = new Image("file:src/main/resources/chalkboard.jpg");
+//    private Image chalkboard = new Image("file:src/main/resources/chalkboard.jpg");
 
     public static void main(String[] args) {
 
-        GameEngine gameEngine = new GameEngine();
-        gameEngine.playGame();
+//        GameEngine gameEngine = new GameEngine();
+//        gameEngine.playGame();
+
+        GameBoard board = new GameBoard(3);
+        String[][] coordinatesMap = new String[3][3];
+        for (int i = 0; i < coordinatesMap.length; i++) {
+            for (int j = 0; j < coordinatesMap[i].length; j++) {
+                coordinatesMap[i][j] = String.valueOf(i) + j;
+            }
+        }
+        board.setBoard(coordinatesMap);
+
+        GameSaver.saveBoard(board.getBoard());
     }
 
 //    @Override
