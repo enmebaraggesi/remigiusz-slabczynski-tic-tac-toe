@@ -1,44 +1,19 @@
-package com.kodilla.tic_tac_toe.misc;
+package com.kodilla.tic_tac_toe.players;
 
-import java.util.*;
+import com.kodilla.tic_tac_toe.misc.Move;
 
-public class CpuPlayer implements PlayersMoving {
+public class CpuPlayerHard extends Player {
 
-    private String name;
-    private String figure;
-
-    public CpuPlayer(String name, String figure) {
-        this.name = name;
-        this.figure = figure;
+    public CpuPlayerHard(String name, String figure) {
+        super(name, figure);
     }
 
     @Override
     public Move makeAMove(String[][] board) {
 
-        System.out.println("\n" + name + " made its move\n");
-        if (name.contains("easy")) {
-            return easyMove(board);
-        }
-        return hardMove(board);
-    }
+        System.out.println("\nCPU made its move");
 
-    private Move easyMove(String[][] board) {
-
-        Random random = new Random();
-        List<Move> listOfMoves = new ArrayList<>();
-        int counter = 0;
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                if (board[i][j].equals(" ")) {
-                    counter++;
-                    listOfMoves.add(new Move(i, j));
-                }
-            }
-        }
-        return listOfMoves.get(random.nextInt(counter));
-    }
-
-    public Move hardMove(String[][] board) {
+        //TODO przetestować obliczanie opłacalnych wyników
 
         int variant = board.length;
         int[][] scoredBoard = new int[variant][variant];
@@ -164,5 +139,12 @@ public class CpuPlayer implements PlayersMoving {
             counter += (slot.equals(figure)) ? 1 : 0;
         }
         return counter;
+    }
+
+    // ---------------- GETTERS & SETTERS ----------------
+
+    @Override
+    public int getLevel() {
+        return 2;
     }
 }

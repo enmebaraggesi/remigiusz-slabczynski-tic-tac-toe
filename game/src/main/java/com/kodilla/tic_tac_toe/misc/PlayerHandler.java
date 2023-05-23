@@ -5,46 +5,57 @@ import java.util.*;
 import com.kodilla.tic_tac_toe.engine.GameEngine;
 import com.kodilla.tic_tac_toe.game_saver.*;
 import com.kodilla.tic_tac_toe.gui.GameBoard;
+import com.kodilla.tic_tac_toe.players.*;
 
+import static com.kodilla.tic_tac_toe.misc.file_operators.FilesSearcher.lookForFile;
 import static com.kodilla.tic_tac_toe.misc.MiscProcessor.*;
 
 public class PlayerHandler {
 
-    private Player[] playersList = new Player[2];
-    private Scanner scanner = new Scanner(System.in);
+    private Scanner scanner;
 
+    public PlayerHandler() {
+        this.scanner = new Scanner(System.in);
+    }
+
+    // Explanation how game works
     public void explainRules() {
 
         System.out.println("""
-            Hi. This is a game of Tic Tac Toe.
-            You will play against your opponent by placing X or O figures on a board.
+            Hi. This is my attempt of Tic Tac Toe game.
             You can choose between playing on a 3x3 or 10x10 board.
-            In 3x3 game you win by having 3 figures in a line.
-            While in 10x10 game you have to put 5 figures in a line to win.
-            Each turn you MUST take a move, by typing coordinates of desired move.""");
+            You can play against other player or CPU of two levels.
+            Each turn you will make a move, by typing coordinates of desired move.
+            If you want to restart or quit game just type 'n' for restart or 'q' for quit instead of making move.
+            Your game is saved while quitting.
+            Let's go!""");
     }
 
-    public void askForGameLoad() {
+    // Question to load game triggers only if save files exist
+    // Returned boolean flag is interpreted in GameEngine.collectGameDecisions()
+    public boolean askForGameLoad() {
 
-        //TODO before asking app will search for existing save file
+        if (lookForFile("save\\boardFile.txt") &&
+            lookForFile("save\\playersFile.txt") &&
+            lookForFile("save\\restFile.txt"))
+        {
+            String answer;
+            do {
+                System.out.println("""
 
-        String answer;
-        do {
-            System.out.println("""
-                
                 Do you want to continue previously saved game?
                 Type 'y' for YES or 'n' for NO.""");
-            answer = scanner.nextLine();
-            if (yerOrNo(answer)) {
-                GameLoader.loadGame();
-            }
-            else if (!yerOrNo(answer)){
-                return;
-            }
-        } while (yesOrNoLoopCheck(answer));
+                answer = scanner.nextLine();
+            } while (yesOrNoLoopCheck(answer));
+            return yerOrNo(answer);
+        }
+        return false;
     }
 
-    public void askHowManyPlayers() {
+    // Question about number of players
+    // When one, player can choose level of difficulty of CPU
+    // Then players objects are created
+    public void askHowManyPlayers(Player[] playersList) {
 
         int answer;
         do {
@@ -54,54 +65,72 @@ public class PlayerHandler {
             Type '1' for player vs CPU or '2' for two players game.""");
             answer = scanner.nextInt();
             scanner.nextLine();
-            if (oneOrTwo(answer)) {
-                playersList[0] = new Player("CPU_easy", randomFigure(""));
-                askForNames();
-            }
-            else if (!oneOrTwo(answer)){
-                askForNames();
-            }
         } while (oneOrTwoLoopCheck(answer));
+        if (oneOrTwo(answer)) {
+            askForCPULevel(playersList);
+            askForNames(playersList);
+        }
+        else if (!oneOrTwo(answer)){
+            askForNames(playersList);
+        }
+
     }
 
-    public void askForNames() {
+    // Question about CPU difficulty level
+    // Chosen level CPU player object is created
+    public void askForCPULevel(Player[] playersList) {
 
+        int answer;
+        do {
+            System.out.println("""
+                            
+                Choose level of CPU opponent.
+                Type '1' for easy or '2' for hard.""");
+            answer = scanner.nextInt();
+            scanner.nextLine();
+            if (answer == 1) {
+                playersList[0] = new CpuPlayerEasy("CPU", randomFigure(playersList));
+            } else if (answer == 2) {
+                playersList[0] = new CpuPlayerHard("CPU", randomFigure(playersList));
+            }
+        } while(oneOrTwoLoopCheck(answer));
+    }
+
+    // Question about player name
+    // When no CPU player were created both players are asked about their names
+    // There is rng making decision about which figure which player will have
+    public void askForNames(Player[] playersList) {
+
+        String name;
         if (playersList[0] == null) {
-            String name;
-            do {
-                System.out.println("\nPlayer 1 please write desired nickname:");
-                name = scanner.nextLine();
-            } while (name.equals(""));
-            playersList[0] = new Player(name, randomFigure(""));
+            for (int i = 0; i < 2; i++) {
+                do {
+                    System.out.println("\nPlayer " + (i + 1) + " please write desired nickname:");
+                    name = scanner.nextLine();
+                } while (name.equals(""));
+                playersList[i] = new HumanPlayer(name, randomFigure(playersList));
 
-            System.out.println("\n" + playersList[0].getName()
-                + " you will play with "
-                + playersList[0].getFigure());
-
-            do {
-                System.out.println("\nPlayer 2 please write desired nickname:");
-                name = scanner.nextLine();
-            } while (name.equals(""));
-            playersList[1] = new Player(name, randomFigure(playersList[0].getFigure()));
-
-            System.out.println("\n" + playersList[1].getName()
-                + " you will play with "
-                + playersList[1].getFigure());
+                System.out.println("\n" + playersList[i].getName()
+                    + " you will play with "
+                    + playersList[i].getFigure() + "'s");
+            }
         }
         else {
-            String name;
             do {
                 System.out.println("\nPlayer please write desired nickname:");
                 name = scanner.nextLine();
             } while (name.equals(""));
-            playersList[1] = new Player(name, randomFigure(playersList[0].getFigure()));
+            playersList[1] = new HumanPlayer(name, randomFigure(playersList));
 
             System.out.println("\n" + playersList[1].getName()
                 + " you will play with "
-                + playersList[1].getFigure());
+                + playersList[1].getFigure() + "'s");
         }
     }
 
+    // There are two variants of game 3x3 board and 10x10 board
+    // After player designate desired variant sample board with coordinates is printed
+    // Returned int value is interpreted in GameEngine.collectGameDecisions()
     public int askForGameVariant() {
 
         int answer;
@@ -114,30 +143,21 @@ public class PlayerHandler {
             scanner.nextLine();
         } while (oneOrTwoLoopCheck(answer));
 
+        System.out.println("""
+                
+                Those are coordinates you will use to make a move:
+                """);
+        GameBoard gameBoard = new GameBoard(1);
         if (answer == 1) {
-            GameBoard gameBoard = new GameBoard(3);
-            String[][] coordinatesMap = new String[3][3];
-            for (int i = 0; i < coordinatesMap.length; i++) {
-                for (int j = 0; j < coordinatesMap[i].length; j++) {
-                    coordinatesMap[i][j] = String.valueOf(i) + j;
-                }
-            }
-            gameBoard.setBoard(coordinatesMap);
-            gameBoard.displayBoard();
+            gameBoard.displayCoordinates(3);
             return 3;
         }
-        GameBoard gameBoard = new GameBoard(10);
-        String[][] coordinatesMap = new String[10][10];
-        for (int i = 0; i < coordinatesMap.length; i++) {
-            for (int j = 0; j < coordinatesMap[i].length; j++) {
-                coordinatesMap[i][j] = String.valueOf(i) + j;
-            }
-        }
-        gameBoard.setBoard(coordinatesMap);
-        gameBoard.displayBoard();
+        gameBoard.displayCoordinates(10);
         return 10;
     }
 
+    // Player is asked about number of games they will play
+    // Returned int value is interpreted in GameEngine.collectGameDecisions()
     public int askHowManyGames() {
 
         int answer;
@@ -152,7 +172,9 @@ public class PlayerHandler {
         return answer;
     }
 
-    public void displayScore(int gameCount) {
+    // After every game player is informed with this game summary
+    // Score is displayed for whole set of games ended during this play
+    public void displayScore(Player[] playersList, int gameCount) {
 
         int p1TimesWon = playersList[0].getScore();
         int p2TimesWon = playersList[1].getScore();
@@ -164,46 +186,61 @@ public class PlayerHandler {
             draws + " rounds resulted in draw.");
     }
 
+    // If 'n' is typed by player instead of move coordinates question to run new game is asked
     public void askForRestart() {
 
-        System.out.println("""
+        String answer;
+        do {
+            System.out.println("""
         
-        Do you want to play a new game?
+        Do you want to start a new game?
         Type 'y' for YES or 'n' for NO.""");
-        String answer = scanner.nextLine();
+            answer = scanner.nextLine();
+        } while (yesOrNoLoopCheck(answer));
         if (yerOrNo(answer)) {
             GameEngine gameEngine = new GameEngine();
             gameEngine.playGame();
         }
     }
 
-    public int askForQuit(int roundCounter, int maxRounds) {
+    // If 'q' is typed by player instead of move coordinates question to quit game is asked
+    // When player confirms his will to end game, current state of play is saved in main directory
+    public void askForQuit(GameStorage gameStorage) {
 
-        System.out.println("""
-        
-        Do you want to quit?
-        Type 'y' for YES or 'n' for NO.""");
-        String answer = scanner.nextLine();
+        String answer;
+        do {
+            System.out.println("""
+                
+                Do you want to quit? Current game state will be saved.
+                Type 'y' for YES or 'n' for NO.""");
+            answer = scanner.nextLine();
+        } while (yesOrNoLoopCheck(answer));
         if (yerOrNo(answer)) {
-//            GameSaver.saveGame();
-            return maxRounds;
+            GameSaver.saveGame(gameStorage);
+            System.exit(0);
         }
-        return roundCounter;
     }
 
+    // Every game the order of players doing their turn should be randomly taken
+    // If rng draw even number order of players will be swapped
+    public void playerRandomizer(Player[] players) {
+
+        Random rng = new Random();
+        boolean flag = rng.nextInt(100) % 2 == 0;
+        while(flag) {
+            Player temp;
+            temp = players[0];
+            players[0] = players[1];
+            players[1] = temp;
+            flag = false;
+        }
+    }
+
+    // Every round there is information displayed about current state of play
     public void displayRoundNumber(int round, int gameCount) {
 
-        System.out.println("\nRound " + round + " / Game " + gameCount);
-    }
-
-    //=========== SETTERS & GETTERS
-
-
-    public Player[] getPlayersList() {
-        return playersList;
-    }
-
-    public void setPlayersList(Player[] playersList) {
-        this.playersList = playersList;
+        System.out.println("\n====================");
+        System.out.println("| Round " + round + " / Game " + gameCount + " |");
+        System.out.println("====================");
     }
 }

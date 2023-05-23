@@ -1,4 +1,4 @@
-package com.kodilla.tic_tac_toe.communication;
+package com.kodilla.tic_tac_toe.misc;
 
 import com.kodilla.tic_tac_toe.misc.MiscProcessor;
 import org.junit.jupiter.api.Test;

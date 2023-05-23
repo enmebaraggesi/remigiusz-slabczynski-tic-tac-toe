@@ -1,8 +1,11 @@
 package com.kodilla.tic_tac_toe.misc;
 
+import com.kodilla.tic_tac_toe.players.*;
+
 public class ScoreChecker {
 
-    public static boolean checkIfWinner(String[][] board, Player player, int gameVariant) {
+    // Checks all possible options for win and if there is one returns '1'
+    public static int checkIfWinner(String[][] board, Player player, int gameVariant) {
 
         boolean diag1Check = checkDiagsLR(board, player.getFigure(), gameVariant);
         boolean diag2Check = checkDiagsRL(board, player.getFigure(), gameVariant);
@@ -11,18 +14,21 @@ public class ScoreChecker {
 
         if (diag1Check || diag2Check || rowsCheck || colsCheck) {
             player.updateScore();
-            return true;
+            return 1;
         }
-        return false;
+        return 0;
     }
 
-    public static boolean checkIfDraw(int movesCounter, int gameVariant) {
+    // Checks if number of possible moves is reached
+    public static int checkIfDraw(int movesCounter, int gameVariant) {
 
-        return (movesCounter == (gameVariant * gameVariant));
-
+        if (movesCounter == (gameVariant * gameVariant)) {
+            return 1;
+        }
+        return 0;
     }
 
-    private static boolean checkRows(String[][] board, String figure, int gameVariant) {
+    private static boolean checkRows(String[][] board, String figure, int requiredFigures) {
 
         for (String[] row : board) {
             int counter = 0;
@@ -31,7 +37,7 @@ public class ScoreChecker {
             for (String slot : row) {
                 counter += (slot.equals(figure)) ? 1 : 0;
 
-                if (counter == gameVariant) {
+                if (counter == requiredFigures) {
                     return true;
                 }
             }

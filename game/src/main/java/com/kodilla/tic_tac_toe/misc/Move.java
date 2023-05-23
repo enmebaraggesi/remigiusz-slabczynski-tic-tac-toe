@@ -1,5 +1,6 @@
 package com.kodilla.tic_tac_toe.misc;
 
+// Used to keep player move
 public class Move {
 
     private int x;
@@ -9,6 +10,8 @@ public class Move {
         this.x = x;
         this.y = y;
     }
+
+    // ---------------- GETTERS & SETTERS ----------------
 
     public int getX() {
         return x;

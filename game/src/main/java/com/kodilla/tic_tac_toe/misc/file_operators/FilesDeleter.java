@@ -1,13 +1,13 @@
-package com.kodilla.tic_tac_toe.misc;
+package com.kodilla.tic_tac_toe.misc.file_operators;
 
 import java.io.*;
 import java.nio.file.*;
 
-public class FileDeleter {
+public class FilesDeleter {
 
-    public static void deleteBoardFile() {
+    public static void deleteFile(String fileName) {
 
-        File file = new File("boardFile.txt");
+        File file = new File(fileName);
         if (file.exists()) {
             try {
                 Files.delete(Path.of(file.getPath()));

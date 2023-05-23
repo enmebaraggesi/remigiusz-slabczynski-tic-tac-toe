@@ -1,69 +1,37 @@
 package com.kodilla.tic_tac_toe.engine;
 
 import com.kodilla.tic_tac_toe.misc.*;
-import com.kodilla.tic_tac_toe.gui.*;
-
-import java.util.Random;
 
 public class GameRound {
 
-    private int roundNumber = 0;
-    private int movesCounter = 0;
-    private int gameCount;
-
-    public GameRound(int gameCount) {
-        this.gameCount = gameCount;
-    }
-
-    public void playRound(PlayerHandler playerHandler, GameBoard gameBoard) {
+    // Playing round of game. One round consists of number of players turns until winner or draw is designated
+    public void playRound(PlayerHandler playerHandler, GameStorage gameStorage) {
 
         GameTurn gameTurn = new GameTurn();
-        Player firstPlayer = playerHandler.getPlayersList()[0];
-        Player secondPlayer = playerHandler.getPlayersList()[1];
 
-        Random random = new Random();
-        int randomStartingPlayer = random.nextInt(2);
-        if (randomStartingPlayer == 1) {
-            firstPlayer = playerHandler.getPlayersList()[1];
-            secondPlayer = playerHandler.getPlayersList()[0];
-        }
+        // Randomly changed order of play every new game round
+        playerHandler.playerRandomizer(gameStorage.getPlayersList());
 
+        // Turns are played until there is a win or draw
         while (true) {
-            playerHandler.displayRoundNumber(++roundNumber, gameCount);
-            boolean winner;
+            gameStorage.raiseRoundNumber();
 
-            winner = gameTurn.playTurn(gameBoard, firstPlayer, ++movesCounter);
-            if (winner) {
-                roundNumber = 0;
-                movesCounter = 0;
-                return;
+            // Information about current state of play is displayed
+            playerHandler.displayRoundNumber(gameStorage.getTurnNumber(), gameStorage.getRoundCount());
+
+            // Two times (once for every player) repeated turn play
+            int winner;
+            for (int i = 0; i < 2; i++) {
+                winner = gameTurn.playTurn(gameStorage, i);
+
+                switch (winner) {
+                    case -2 -> playerHandler.askForRestart();
+                    case -1 -> playerHandler.askForQuit(gameStorage);
+                    case 1 -> {
+                        return;
+                    }
+                }
             }
-            //if other decision than move - save restart quit game
-            winner = gameTurn.playTurn(gameBoard, secondPlayer, ++movesCounter);
-            if (winner) {
-                roundNumber = 0;
-                movesCounter = 0;
-                return;
-            }
-            //if other decision than move - save restart quit game
         }
-    }
-
-    //============ GETTER & SETTER
-
-    public int getRoundNumber() {
-        return roundNumber;
-    }
-
-    public void setRoundNumber(int roundNumber) {
-        this.roundNumber = roundNumber;
-    }
-
-    public int getGameCount() {
-        return gameCount;
-    }
-
-    public void setGameCount(int gameCount) {
-        this.gameCount = gameCount;
     }
 }

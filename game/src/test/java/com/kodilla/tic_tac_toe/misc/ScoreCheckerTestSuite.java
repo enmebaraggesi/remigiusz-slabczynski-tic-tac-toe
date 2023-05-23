@@ -2,16 +2,15 @@ package com.kodilla.tic_tac_toe.misc;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-class FileCreatorTestSuite {
+class ScoreCheckerTestSuite {
 
     @Test
-    void createFileTest() {
-
-        FileCreator.createNewFile("board.txt");
+    void checkIfWinner() {
     }
 
+    @Test
+    void checkIfDraw() {
+    }
 }

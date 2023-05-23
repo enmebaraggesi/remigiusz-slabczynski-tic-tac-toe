@@ -4,17 +4,18 @@ import java.util.Arrays;
 
 public class GameBoard {
 
-    private String[][] board;
+    String[][] board;
 
     public GameBoard(int gameVariant) {
-
-        this.board = new String[gameVariant][gameVariant];
+        // Creates empty board of various dimensions
+        board = new String[gameVariant][gameVariant];
         for (String[] strings : board) {
             Arrays.fill(strings, " ");
         }
     }
 
-    public void displayBoard() {
+    // Displays game board
+    public void displayBoard(String[][] board) {
 
         StringBuilder stringBuilder = new StringBuilder();
         for (String[] strings : board) {
@@ -29,13 +30,25 @@ public class GameBoard {
         System.out.println(stringBuilder);
     }
 
-    public String[][] getBoard() {
+    // Displays game board filled with coordinates for every slot
+    public void displayCoordinates(int variant) {
 
+        String[][] sampleBoard = new String[variant][variant];
+        for (int i = 0; i < variant; i++) {
+            for (int j = 0; j < variant; j++) {
+                sampleBoard[i][j] = String.valueOf(i) + j;
+            }
+        }
+        displayBoard(sampleBoard);
+    }
+
+    // ---------------- GETTERS & SETTERS ----------------
+
+    public String[][] getBoard() {
         return board;
     }
 
     public void setBoard(String[][] board) {
-
         this.board = board;
     }
 }
