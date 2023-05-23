@@ -1,4 +1,4 @@
-package com.kodilla.tic_tac_toe.misc;
+package com.kodilla.tic_tac_toe.engine;
 
 import com.kodilla.tic_tac_toe.gui.GameBoard;
 import com.kodilla.tic_tac_toe.players.Player;
@@ -14,7 +14,7 @@ public class GameStorage {
     GameBoard gameBoard;
 
     // ------------------- GAME ENGINE -------------------
-    private int roundCount = 0;
+    private int roundCount = 1;
     private int maxGames;
     private int gameVariant;
 

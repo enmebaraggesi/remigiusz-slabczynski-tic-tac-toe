@@ -2,7 +2,7 @@ package com.kodilla.tic_tac_toe.game_saver;
 
 import java.io.*;
 
-import com.kodilla.tic_tac_toe.misc.GameStorage;
+import com.kodilla.tic_tac_toe.engine.GameStorage;
 import com.kodilla.tic_tac_toe.players.*;
 
 public class GameSaver {

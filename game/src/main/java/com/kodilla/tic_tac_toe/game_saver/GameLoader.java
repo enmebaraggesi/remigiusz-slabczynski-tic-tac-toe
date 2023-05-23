@@ -1,7 +1,7 @@
 package com.kodilla.tic_tac_toe.game_saver;
 
+import com.kodilla.tic_tac_toe.engine.GameStorage;
 import com.kodilla.tic_tac_toe.gui.GameBoard;
-import com.kodilla.tic_tac_toe.misc.*;
 import com.kodilla.tic_tac_toe.players.*;
 
 import java.io.*;

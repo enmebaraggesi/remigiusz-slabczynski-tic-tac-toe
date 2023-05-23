@@ -3,6 +3,7 @@ package com.kodilla.tic_tac_toe.misc;
 import java.util.*;
 
 import com.kodilla.tic_tac_toe.engine.GameEngine;
+import com.kodilla.tic_tac_toe.engine.GameStorage;
 import com.kodilla.tic_tac_toe.game_saver.*;
 import com.kodilla.tic_tac_toe.gui.GameBoard;
 import com.kodilla.tic_tac_toe.players.*;
@@ -47,7 +48,7 @@ public class PlayerHandler {
                 Type 'y' for YES or 'n' for NO.""");
                 answer = scanner.nextLine();
             } while (yesOrNoLoopCheck(answer));
-            return yerOrNo(answer);
+            return yesOrNo(answer);
         }
         return false;
     }
@@ -197,7 +198,7 @@ public class PlayerHandler {
         Type 'y' for YES or 'n' for NO.""");
             answer = scanner.nextLine();
         } while (yesOrNoLoopCheck(answer));
-        if (yerOrNo(answer)) {
+        if (yesOrNo(answer)) {
             GameEngine gameEngine = new GameEngine();
             gameEngine.playGame();
         }
@@ -215,7 +216,7 @@ public class PlayerHandler {
                 Type 'y' for YES or 'n' for NO.""");
             answer = scanner.nextLine();
         } while (yesOrNoLoopCheck(answer));
-        if (yerOrNo(answer)) {
+        if (yesOrNo(answer)) {
             GameSaver.saveGame(gameStorage);
             System.exit(0);
         }

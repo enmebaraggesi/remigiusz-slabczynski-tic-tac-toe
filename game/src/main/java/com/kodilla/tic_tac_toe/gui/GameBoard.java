@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class GameBoard {
 
-    String[][] board;
+    private String[][] board;
 
     public GameBoard(int gameVariant) {
         // Creates empty board of various dimensions

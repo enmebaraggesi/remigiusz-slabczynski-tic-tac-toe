@@ -15,7 +15,7 @@ public final class MiscProcessor {
             Map.of("q", new Move(-1, 0), "n", new Move(-2, 0));
 
     // Returns true if user choose 'yes'
-    public static boolean yerOrNo(String answer) {
+    public static boolean yesOrNo(String answer) {
 
         answer = answer.toLowerCase();
         return YES_NO_MAP.get(answer);
@@ -50,11 +50,6 @@ public final class MiscProcessor {
             return QUIT_RESET_MAP.get(answer);
         }
         return null;
-    }
-
-    public static boolean isObjectInteger(Object answer) {
-
-        return answer instanceof Integer;
     }
 
     // Checks if chosen number of games is within limit

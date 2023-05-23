@@ -27,16 +27,8 @@ public abstract class Player {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getFigure() {
         return figure;
-    }
-
-    public void setFigure(String figure) {
-        this.figure = figure;
     }
 
     public int getScore() {

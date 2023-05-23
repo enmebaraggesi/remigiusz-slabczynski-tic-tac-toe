@@ -9,10 +9,10 @@ import static com.kodilla.tic_tac_toe.misc.file_operators.FilesSearcher.lookForF
 
 public class GameEngine {
 
-    private GameStorage gameStorage;
+    private final GameStorage GAME_STORAGE;
 
     public GameEngine() {
-        this.gameStorage = new GameStorage();
+        this.GAME_STORAGE = new GameStorage();
     }
 
     // Core method to run game in main class GameRunner
@@ -24,29 +24,29 @@ public class GameEngine {
         collectGameDecisions(playerHandler);
 
         // Prepares a new board when there is none from previously saved game
-        if (gameStorage.getGameBoard() == null) {
-            gameStorage.setGameBoard(new GameBoard(gameStorage.getGameVariant()));
+        if (GAME_STORAGE.getGameBoard() == null) {
+            GAME_STORAGE.setGameBoard(new GameBoard(GAME_STORAGE.getGameVariant()));
         }
 
         GameRound gameRound = new GameRound();
 
         // Core loop inside which turns are made and score counted
         // Repeats until number of desired rounds is reached
-        while (!(gameStorage.getRoundCount() == gameStorage.getMaxGames())) {
+        while ((GAME_STORAGE.getRoundCount() <= GAME_STORAGE.getMaxGames())) {
 
-            gameStorage.raiseRoundCount();
-            gameRound.playRound(playerHandler, gameStorage);
-            playerHandler.displayScore(gameStorage.getPlayersList(), gameStorage.getRoundCount());
+            gameRound.playRound(playerHandler, GAME_STORAGE);
+            GAME_STORAGE.raiseRoundCount();
+            playerHandler.displayScore(GAME_STORAGE.getPlayersList(), GAME_STORAGE.getRoundCount());
 
             // Counters and board reset after every round played
-            gameStorage.setTurnNumber(0);
-            gameStorage.setMovesCounter(0);
-            gameStorage.setGameBoard(new GameBoard(gameStorage.getGameVariant()));
+            GAME_STORAGE.setTurnNumber(0);
+            GAME_STORAGE.setMovesCounter(0);
+            GAME_STORAGE.setGameBoard(new GameBoard(GAME_STORAGE.getGameVariant()));
         }
 
         // Saves final score
         HistoryKeeper historyKeeper = new HistoryKeeper();
-        historyKeeper.keepScoreBoard(gameStorage.getPlayersList(), gameStorage.getRoundCount());
+        historyKeeper.keepScoreBoard(GAME_STORAGE.getPlayersList(), GAME_STORAGE.getRoundCount());
     }
 
     // Communicates with player to gather information needed to start a game
@@ -60,11 +60,11 @@ public class GameEngine {
         }
         // If player wish to load saved game, here game will be loaded
         if(playerHandler.askForGameLoad()) {
-            GameLoader.loadGame(gameStorage);
+            GameLoader.loadGame(GAME_STORAGE);
             return;
         }
-        gameStorage.setGameVariant(playerHandler.askForGameVariant());
-        playerHandler.askHowManyPlayers(gameStorage.getPlayersList());
-        gameStorage.setMaxGames(playerHandler.askHowManyGames());
+        GAME_STORAGE.setGameVariant(playerHandler.askForGameVariant());
+        playerHandler.askHowManyPlayers(GAME_STORAGE.getPlayersList());
+        GAME_STORAGE.setMaxGames(playerHandler.askHowManyGames());
     }
 }
